@@ -1,3 +1,5 @@
+import datetime
+
 def chatbot_response(user_input):
     # Convert user input to lowercase to make the matching case-insensitive
     user_input = user_input.lower()
@@ -26,19 +28,40 @@ def chatbot_response(user_input):
     elif "do you like music" in user_input:
         return "I'm a bot, so I don't listen to music, but I hear it's very enjoyable!"
     elif "what is the time" in user_input:
-        return "I don't have a clock, but you can check your device for the current time."
+        # Provide the current time
+        current_time = datetime.datetime.now().strftime("%H:%M:%S")
+        return f"The current time is {current_time}."
     else:
         return "I'm sorry, I don't understand that. Could you please rephrase?"
 
 # Main loop to interact with the chatbot
 def chat():
-    print("\033[92m" + "Welcome to the chatbot. Type 'bye' to exit." + "\033[0m")
+    print("\033[92m" + """
+*****************************************************
+*                                                   *
+*        Welcome to the Chatbot!                    *
+*        Type 'bye' to exit.                        *
+*                                                   *
+*****************************************************
+""" + "\033[0m")
+    
     while True:
-        user_input = input("\033[94m" + "You: " + "\033[0m")
-        response = chatbot_response(user_input)
-        print("\033[95m" + "Chatbot: " + response + "\033[0m")
-        if user_input.lower() in ["bye", "goodbye"]:
-            break
+        try:
+            user_input = input("\033[94m" + "You: " + "\033[0m")
+            response = chatbot_response(user_input)
+            print("\033[95m" + "Chatbot: " + "\033[0m" + "\033[93m" + response + "\033[0m")
+            if user_input.lower() in ["bye", "goodbye"]:
+                print("\033[92m" + """
+*****************************************************
+*                                                   *
+*        Thank you for chatting!                    *
+*        Have a great day!                          *
+*                                                   *
+*****************************************************
+""" + "\033[0m")
+                break
+        except Exception as e:
+            print("\033[91m" + f"An error occurred: {e}" + "\033[0m")
 
-# Start the chatbot
+# Start the chatbot
 chat()

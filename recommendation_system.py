@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+
 BLUE = '\033[94m'
 GREEN = '\033[92m'
 CYAN = '\033[96m'
 RESET = '\033[0m'
+
+# Ratings data for clothes
 ratings_data = {
     'User1': [5, 3, 0, 0, 4],
     'User2': [4, 0, 0, 0, 3],
@@ -12,7 +15,8 @@ ratings_data = {
     'User4': [3, 3, 0, 5, 4],
     'User5': [0, 0, 4, 0, 0],
 }
-df = pd.DataFrame(ratings_data, index=['Movie1', 'Movie2', 'Movie3', 'Movie4', 'Movie5'])
+df = pd.DataFrame(ratings_data, index=['Shirt1', 'Shirt2', 'Pants1', 'Pants2', 'Jacket1'])
+
 def get_similar_users(user_id, df, k=2):
     similarities = {}
     for user in df.columns:
@@ -21,6 +25,7 @@ def get_similar_users(user_id, df, k=2):
             similarities[user] = similarity
     similar_users = sorted(similarities.items(), key=lambda x: x[1], reverse=True)[:k]
     return similar_users
+
 def recommend_items(user_id, df, similar_users):
     recommendations = {}
     for user, _ in similar_users:
@@ -33,6 +38,7 @@ def recommend_items(user_id, df, similar_users):
                     recommendations[item] += rated_items[item]
     recommendations = sorted(recommendations.items(), key=lambda x: x[1], reverse=True)
     return recommendations
+
 target_user = 'User1'
 similar_users = get_similar_users(target_user, df)
 print(f"{BLUE}Top similar users for {target_user}:{RESET}")
@@ -42,4 +48,5 @@ for user, similarity in similar_users:
 recommendations = recommend_items(target_user, df, similar_users)
 print(f"\n{BLUE}Recommendations for {target_user}:{RESET}")
 for item, score in recommendations:
-    print(f"{CYAN}{item}:{RESET} Score = {score}")
+    print(f"{CYAN}{item}:{RESET} Score = {score}")
+
